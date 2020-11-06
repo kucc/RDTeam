@@ -1,6 +1,6 @@
 from rest_framework.exceptions import NotFound, APIException
 
-from game.models import Room, Game, User, RoundSubject, RoundSubjectDescription
+from game.models import Room, Game, User, RoundSubject, RoundSubjectDescription, UserGameState
 
 
 def make_description(room_code, user_id, description):
@@ -24,14 +24,13 @@ def make_description(room_code, user_id, description):
     RoundSubjectDescription(round_subject=round_subject, user=user, description=description).save()
 
     round_subject_descriptions = RoundSubjectDescription.objects.filter(round_subject=round_subject)
-
-
-    user_id_set = set()
+    exclude_user_id_set = set()
     for subject_description in round_subject_descriptions:
-        user_id_set.add(subject_description.user.id)
-    describable_users = list(filter(lambda u: u.id not in user_id_set, room.user_set.all()))
+        exclude_user_id_set.add(subject_description.user.id)
+    for dead_user in UserGameState.objects.filter(game=game, is_alive=False):
+        exclude_user_id_set.add(dead_user.id)
 
-
+    describable_users = list(filter(lambda u: u.id not in exclude_user_id_set, room.user_set.all()))
     describable_users = sorted(describable_users, key=lambda u: u.id)
     if len(describable_users) == 0:
         game.state = Game.VOTING
