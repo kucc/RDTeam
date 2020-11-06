@@ -22,8 +22,8 @@ def make_users_state_response(user_game_states):
 def calculate_total_vote_count(votes):
     result = {}
     for vote in votes:
-        result.setdefault(vote.user.unique_id, 0)
-        result[vote.user.unique_id] = result[vote.user.unique_id] + 1
+        result.setdefault(vote.target_user.unique_id, 0)
+        result[vote.target_user.unique_id] = result[vote.target_user.unique_id] + 1
     return result
 
 
