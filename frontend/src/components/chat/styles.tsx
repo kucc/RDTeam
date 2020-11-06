@@ -10,6 +10,24 @@ export const Chat = styled.div`
   width: 100%;
   height: 100%;
   background: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: left;
+  padding-bottom: 5rem;
+`;
+
+export const ChatLog = styled.div`
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #fff;
+  padding-left: 2rem;
+  padding-bottom: 0.5rem;
+`;
+
+export const NickName = styled.span`
+  color: red;
+  font-weight: 700;
 `;
 
 export const InputContainer = styled.div`

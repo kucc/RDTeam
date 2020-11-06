@@ -39,21 +39,23 @@ export const PlayerCharacterContainer = styled.div`
 `;
 
 interface PlayerCharacterProps {
-  index: number;
-  isDead: boolean;
+  index?: number;
+  isAlive?: boolean;
 }
 
 export const PlayerCharacter = styled.img<PlayerCharacterProps>`
   width: 100%;
   padding: 3rem;
-  filter: saturate(${(props) => (props.isDead ? "0%" : "100%")});
-  opacity: ${(props) => (props.isDead ? "70%" : "100%")};
+  filter: saturate(${(props) => (props.isAlive ? "0%" : "100%")});
+  opacity: ${(props) => (props.isAlive ? "70%" : "100%")};
 `;
 
-export const PlayerName = styled.div`
+export const PlayerName = styled.div<PlayerCharacterProps>`
   margin-bottom: -3rem;
   font-size: 1.6rem;
   font-weight: 700;
+  color: ${(props) => (props.isAlive ? "#aaa" : "#000")};
+  text-decoration: ${(props) => (props.isAlive ? "line-through" : "none")};
 `;
 
 export const Bubble = styled.div`

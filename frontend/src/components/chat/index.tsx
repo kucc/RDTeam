@@ -6,6 +6,18 @@ function Chat() {
     <>
       <S.Layout>
         <S.Chat>
+          <S.ChatLog>
+            <S.NickName>닉네임 : </S.NickName>
+            채팅채팅채팅채팅채팅채팅채팅채팅채팅
+          </S.ChatLog>
+          <S.ChatLog>
+            <S.NickName>닉네임 : </S.NickName>
+            채팅채팅채팅채팅채팅채팅채팅채팅채팅
+          </S.ChatLog>
+          <S.ChatLog>
+            <S.NickName>닉네임 : </S.NickName>
+            채팅채팅채팅채팅채팅채팅채팅채팅채팅
+          </S.ChatLog>
           <S.InputContainer>
             <S.ChatInput type="text" placeholder="채팅을 입력하세요" />
             <S.SendButton>전송</S.SendButton>

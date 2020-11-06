@@ -6,7 +6,18 @@ import Chat from "../../components/chat";
 import Guide from "../../components/guide";
 import PopUp from "../../components/popup";
 
-function Game() {
+interface playersProps {
+  nickname: string;
+  userId: string;
+  state: string;
+}
+
+interface GameProps {
+  user: playersProps;
+  roomcode: string;
+}
+
+function Game({ user, roomcode }: GameProps) {
   return (
     <>
       <S.Layout>
@@ -14,7 +25,7 @@ function Game() {
           <Player />
           <Guide />
           <Chat />
-          {/* <PopUp /> */}
+          {/* {<PopUp />} */}
         </S.Game>
       </S.Layout>
     </>

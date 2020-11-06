@@ -1,18 +1,34 @@
-import React from "react";
-import { Route, BrowserRouter, Switch } from "react-router-dom";
-
+import React, { useState } from "react";
 import Game from "./view/game";
 import Main from "./view/main";
 
+export interface playersProps {
+  nickname: string;
+  userId: string;
+  state: string;
+}
+
 function App() {
+  const [page, setPage] = useState("main");
+  const [user, setUser] = useState<playersProps>({
+    nickname: "",
+    userId: "",
+    state: "",
+  });
+  const [roomcode, setRoomcode] = useState("");
   return (
     <>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/play" exact component={Game} />
-          <Route path="/" exact component={Main} />
-        </Switch>
-      </BrowserRouter>
+      {page == "main" ? (
+        <Main
+          user={user}
+          setUser={setUser}
+          roomcode={roomcode}
+          setRoomcode={setRoomcode}
+          startGame={() => setPage("play")}
+        />
+      ) : (
+        <Game user={user} roomcode={roomcode} />
+      )}
     </>
   );
 }

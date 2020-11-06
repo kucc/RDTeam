@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    //transition: all 0.2s ease;
+    transition: all 0.2s ease;
   }
   html {
     font-size : 10px;
