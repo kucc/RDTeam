@@ -34,6 +34,8 @@ function Game({ user, roomcode }: GameProps) {
   const [nowState, setNowState] = useState("");
   const [game, setGame] = useState<gamesProps>();
   const [voteIndex, setVoteIndex] = useState(-1);
+  const [users, setUsers] = useState<playersProps[]>();
+  const [result, setResult] = useState("");
   const loadGameInfo = async () => {
     axios
       .get(
@@ -41,9 +43,8 @@ function Game({ user, roomcode }: GameProps) {
       )
       .then(({ data }) => {
         setIsManager(data.room.owner == user.userId);
-        console.log(data.room.owner);
-        console.log(user.userId);
         setNowState(data.room.state);
+        setUsers(data.users);
         if (data.game) setGame(data.game);
       })
       .then(() => setLoading(true))
@@ -84,6 +85,8 @@ function Game({ user, roomcode }: GameProps) {
             isMafia={game?.me.role === "MAFIA" || false}
             voteIndex={voteIndex}
             setVoteIndex={setVoteIndex}
+            users={users || []}
+            result={result}
           />
           <Chat />
           {game?.state === "DESCRIBING" &&
@@ -91,8 +94,22 @@ function Game({ user, roomcode }: GameProps) {
             <PopUp
               roomcode={roomcode}
               userId={user.userId}
+              isGuessing={false}
               isMafia={game?.me.role === "MAFIA" || false}
               keyword={game?.subject || ""}
+              setResult={setResult}
+            />
+          ) : (
+            <></>
+          )}
+          {game?.state === "GUESSING" && game?.me.role === "MAFIA" ? (
+            <PopUp
+              roomcode={roomcode}
+              userId={user.userId}
+              isGuessing={true}
+              isMafia={game?.me.role === "MAFIA" || false}
+              keyword={game?.subject || ""}
+              setResult={setResult}
             />
           ) : (
             <></>

@@ -43,6 +43,7 @@ export const ChatInput = styled.input`
 `;
 
 export const Label = styled.div`
+  text-align: right;
   width: 10rem;
   font-size: 2rem;
   font-weight: 800;

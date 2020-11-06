@@ -85,7 +85,8 @@ function Main({ user, setUser, roomcode, setRoomcode, startGame }: MainProps) {
           <span style={{ color: "#900" }}>용</span> 게임
         </S.Comment>
         <S.Title>
-          <span style={{ color: "#900" }}>박진용</span>🐉게임
+          마피아🐉
+          <span style={{ color: "#900" }}>박진용</span>
         </S.Title>
         <S.InputContainer>
           <S.Label>닉네임</S.Label>
@@ -110,7 +111,7 @@ function Main({ user, setUser, roomcode, setRoomcode, startGame }: MainProps) {
           <S.RoomButton onClick={enterRoom}>방 입장하기</S.RoomButton>
         </S.ButtonContainer>
         <S.Credit>
-          ⓒ 2021. 팀 박진용 all rights reserved.
+          ⓒ 2020. 팀 박진용 all rights reserved.
           <br />
           <span style={{ fontSize: "1.4rem", fontWeight: 500 }}>
             14 김수홍, 17 최하민, 19 김현채

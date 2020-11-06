@@ -3,6 +3,12 @@ import * as S from "./styles";
 import { COLOR } from "../../constant";
 import axios from "axios";
 
+interface playersProps {
+  nickname: string;
+  userId: string;
+  state: string;
+}
+
 interface GuideProps {
   userId: string;
   roomcode: string;
@@ -12,6 +18,8 @@ interface GuideProps {
   keyword: string;
   voteIndex: number;
   setVoteIndex: (n: number) => void;
+  users: playersProps[];
+  result: string;
 }
 
 function Guide({
@@ -23,6 +31,8 @@ function Guide({
   keyword,
   voteIndex,
   setVoteIndex,
+  users,
+  result,
 }: GuideProps) {
   const [loading, setLoading] = useState(false);
   const startGame = async () => {
@@ -46,10 +56,11 @@ function Guide({
   const vote = async () => {
     axios
       .post(
-        "https://realdragon.herokuapp.com/game/start",
+        "https://realdragon.herokuapp.com/vote",
         {
           roomCode: roomcode,
           userId: userId,
+          targetUserId: users[voteIndex].userId,
         },
         { withCredentials: true }
       )
@@ -89,13 +100,22 @@ function Guide({
                 누가 <span style={{ fontWeight: 800 }}>마피아</span>일까요?
               </S.Text>
               <S.Button
-                 isBlank={voteIndex == -1}
+                isBlank={voteIndex == -1}
                 onClick={() => {
                   if (voteIndex != -1) vote();
                 }}
               >
                 투표 완료
               </S.Button>
+            </>
+          ) : now === "END" ? (
+            <>
+              <S.Text>
+                <S.RoleText isMafia={isMafia}>
+                  {result == "MAFIA" ? "마피아" : "시민"}
+                </S.RoleText>
+                (이)가 승리했습니다.
+              </S.Text>
             </>
           ) : (
             <>
