@@ -25,7 +25,10 @@ SECRET_KEY = 'o79r+#sm)p=pxu$uf*^0=x)d=xkf==j5=z9dqc#6wt3vpljf=*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['realdragon.herokuapp.com']
+ALLOWED_HOSTS = [
+    'localhost',
+    'realdragon.herokuapp.com'
+]
 
 
 # Application definition

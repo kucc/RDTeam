@@ -6,7 +6,8 @@ from game.models import Room, Game, Role, UserGameState, Vote, RoundSubject, Rou
 def make_users_response(users):
     return [{
         "nickname": user_state.nickname,
-        "userId": user_state.unique_id
+        "userId": user_state.unique_id,
+        "state": "ALIVE"
     } for user_state in users]
 
 
@@ -58,16 +59,16 @@ def fetch_room(room_code, user_id):
     if not game:
         return make_waiting_room_response(room)
 
-    owner_id = room.users.filter(lambda x: x.is_owner).unique_id
-    me = room.users.filter(lambda x: x.unique_id == user_id).unique_id
-    my_role = Role.objects.filter(game=game, user=me)
+    owner_id = next(filter(lambda x: x.is_owner, list(room.user_set.all()))).unique_id
+    me = User.objects.filter(unique_id=user_id).first()
+    my_role = Role.objects.filter(game=game, user=me).first()
     user_game_states = UserGameState.objects.filter(game=game)
 
-    subject = RoundSubject.objects.filter(game=game, round=game.round)
-    subject_desciptions = subject.round_subject_description_set
+    subject = RoundSubject.objects.filter(game=game, round=game.round).first()
+    subject_desciptions = RoundSubjectDescription.objects.filter(round_subject=subject)
 
     votes = Vote.objects.filter(game=game, round=game.round)
-    voted = len(votes.filter(lambda vote: vote.user.unique_id == user_id)) != 0
+    voted = len(list(filter(lambda vote: vote.user.unique_id == user_id, votes))) != 0
 
     return {
         "room": {
@@ -76,11 +77,11 @@ def fetch_room(room_code, user_id):
         },
         "game": {
             "me": {
-                "role": my_role,
+                "role": my_role.role_name,
                 "voted": voted
             },
             "state": game.state,
-            "subject": subject.word,
+            "subject": subject.subject_word,
             "round": game.round,
             "currentDescriber": game.current_describer.unique_id,
             "subjectDescription": make_round_subject_description_response(subject_desciptions),
