@@ -53,11 +53,11 @@ def vote_action(room_code, user_id, target_id):
 
         game.state = Game.GUSSING
 
-    if len(aliver_id_set) == 2:
-        room.state = Room.WAITING
-        room.save()
-        game.state = Game.END
+        if len(aliver_id_set) - 1 == 2:
+            room.state = Room.WAITING
+            room.save()
+            game.state = Game.END
         # 마피아 승리
-    game.save()
+        game.save()
 
     return VoteResult(room, user, target)
