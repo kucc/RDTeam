@@ -1,7 +1,7 @@
 from django.urls import path
+from rest_framework import routers
 
-from . import views
+from .views.room import CreateRoomApiView
 
-urlpatterns = [
-    path('', views.test, name='index'),
-]
+router = routers.DefaultRouter()
+router.register(r'/room', CreateRoomApiView, basename='create_room')

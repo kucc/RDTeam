@@ -12,12 +12,13 @@ class Game(models.Model):
     game_states = (
         (DESCRIBING, '설명'),
         (VOTING, '투표 중'),
-        (GUSSING, '주제 추측 중'),
+        (GUSSING, '주제 추측 중')
     )
 
     round = models.IntegerField()
     room = models.ForeignKey(Room, on_delete=CASCADE)
     state = models.CharField(choices=game_states, max_length=20)
+    current_describer = models.ForeignKey(User, on_delete=CASCADE)
 
 
 class Role(models.Model):
