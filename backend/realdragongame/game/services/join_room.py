@@ -11,7 +11,6 @@ class JoinRoomResult:
         self.room = room
         self.user = user
 
-
 def join_room(roomCode, nickname):
 
     room = Room.objects.filter(code=roomCode).first()
