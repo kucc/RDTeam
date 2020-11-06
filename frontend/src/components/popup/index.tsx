@@ -1,19 +1,38 @@
 import React, { useState } from "react";
 import * as S from "./styles";
+import axios from "axios";
 
-function PopUp() {
-  const isMapia = false;
-  const keyword = "박진용";
+interface PopUpProps {
+  roomcode: string;
+  userId: string;
+  isMafia: boolean;
+  keyword: string;
+}
+
+function PopUp({ roomcode, userId, isMafia, keyword }: PopUpProps) {
   const [chatText, setChatText] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChatText(e.target.value);
   };
-  const onSubmit = () => {};
+  const onSubmit = async () => {
+    axios
+      .post(
+        `https://realdragon.herokuapp.com/description`,
+        { roomCode: roomcode, userId: userId, description: chatText },
+        {
+          withCredentials: true,
+        }
+      )
+      .then(({ data }) => {})
+      .catch((e) => {
+        console.error(e);
+      });
+  };
   return (
     <>
       <S.Layout>
         <S.PopUp>
-          {isMapia ? (
+          {isMafia ? (
             <S.Text>제시어를 눈치껏 유추해서 설명해주세요.</S.Text>
           ) : (
             <S.Text>

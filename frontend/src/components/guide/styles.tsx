@@ -27,13 +27,13 @@ export const Text = styled.div`
 `;
 
 interface GuideProps {
-  isMapia?: boolean;
+  isMafia?: boolean;
 }
 
 export const RoleText = styled.span<GuideProps>`
   font-size: 4rem;
   font-weight: 800;
-  color: ${(props) => (props.isMapia ? COLOR.red : COLOR.blue)};
+  color: ${(props) => (props.isMafia ? COLOR.red : COLOR.blue)};
 `;
 
 export const Comment = styled.div`
@@ -42,16 +42,21 @@ export const Comment = styled.div`
   margin: 1rem;
 `;
 
-export const GameStartButton = styled.button`
+interface ButtonProps {
+  isBlank?: boolean;
+}
+
+export const Button = styled.button<ButtonProps>`
   width: 20rem;
   height: 5rem;
   outline: none;
   border: none;
-  background: ${COLOR.dark};
+  background: ${(props) => (props.isBlank ? COLOR.gray : COLOR.dark)};
+  color: ${(props) => (props.isBlank ? COLOR.darkgray : "black")};
   font-weight: 800;
   border-radius: 3rem;
   font-size: 2rem;
   :hover {
-    background: ${COLOR.darker};
+    background: ${(props) => (props.isBlank ? COLOR.gray : COLOR.darker)};
   }
 `;

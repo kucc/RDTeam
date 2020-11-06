@@ -7,13 +7,24 @@ interface GuideProps {
   userId: string;
   roomcode: string;
   isManager: boolean;
+  isMafia: boolean;
   now: string;
+  keyword: string;
+  voteIndex: number;
+  setVoteIndex: (n: number) => void;
 }
 
-function Guide({ userId, roomcode, isManager, now }: GuideProps) {
-  const isMapia = false;
-  const isVoting = true;
-  const keyword = "박진용";
+function Guide({
+  userId,
+  roomcode,
+  isManager,
+  now,
+  isMafia,
+  keyword,
+  voteIndex,
+  setVoteIndex,
+}: GuideProps) {
+  const [loading, setLoading] = useState(false);
   const startGame = async () => {
     axios
       .post(
@@ -24,8 +35,31 @@ function Guide({ userId, roomcode, isManager, now }: GuideProps) {
         },
         { withCredentials: true }
       )
+      .then(() => {
+        setLoading(true);
+      })
       .catch((e) => {
         console.error(e);
+        setLoading(false);
+      });
+  };
+  const vote = async () => {
+    axios
+      .post(
+        "https://realdragon.herokuapp.com/game/start",
+        {
+          roomCode: roomcode,
+          userId: userId,
+        },
+        { withCredentials: true }
+      )
+      .then(() => {
+        setLoading(true);
+        setVoteIndex(-1);
+      })
+      .catch((e) => {
+        console.error(e);
+        setLoading(false);
       });
   };
   return (
@@ -43,31 +77,37 @@ function Guide({ userId, roomcode, isManager, now }: GuideProps) {
               </S.Text>
               <S.Comment>
                 {isManager ? (
-                  <S.GameStartButton onClick={startGame}>
-                    게임 시작
-                  </S.GameStartButton>
+                  <S.Button onClick={startGame}>게임 시작</S.Button>
                 ) : (
                   <>방장이 게임을 시작하기를 기다려주세요.</>
                 )}
               </S.Comment>
             </>
-          ) : isVoting ? (
+          ) : now === "VOTING" ? (
             <>
               <S.Text>
                 누가 <span style={{ fontWeight: 800 }}>마피아</span>일까요?
               </S.Text>
+              <S.Button
+                 isBlank={voteIndex == -1}
+                onClick={() => {
+                  if (voteIndex != -1) vote();
+                }}
+              >
+                투표 완료
+              </S.Button>
             </>
           ) : (
             <>
               <S.Text>
                 당신은{" "}
-                <S.RoleText isMapia={isMapia}>
-                  {isMapia ? "마피아" : "시민"}
+                <S.RoleText isMafia={isMafia}>
+                  {isMafia ? "마피아" : "시민"}
                 </S.RoleText>
                 입니다.
               </S.Text>
               <S.Comment>
-                {isMapia ? (
+                {isMafia ? (
                   "눈치껏 제시어를 맞혀 보세요."
                 ) : (
                   <>

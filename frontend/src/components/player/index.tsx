@@ -8,22 +8,25 @@ interface playersProps {
   state: string;
 }
 
-interface subjectDescriptionProps {
-  userId: string;
-  description: string;
-}
-
 interface PlayerProps {
   userId: string;
   roomcode: string;
+  isVoting: boolean;
+  descriptions: { userId: string; description: string }[];
+  voteIndex: number;
+  setVoteIndex: (n: number) => void;
 }
 
-function Player({ userId, roomcode }: PlayerProps) {
+function Player({
+  userId,
+  roomcode,
+  isVoting,
+  descriptions,
+  voteIndex,
+  setVoteIndex,
+}: PlayerProps) {
   const [loading, setLoading] = useState(false);
-  const isVoting = true;
-  const [voteIndex, setVoteIndex] = useState(1);
   const [players, setPlayers] = useState<playersProps[]>([]);
-  const [description, setDescription] = useState<subjectDescriptionProps[]>([]);
   const [currentDescriber, setCurrentDescriber] = useState("");
   const loadCharacters = async () => {
     axios
@@ -35,8 +38,6 @@ function Player({ userId, roomcode }: PlayerProps) {
       )
       .then(({ data }) => {
         setPlayers(data.users);
-        //setDescription(data.game.subjectDescription);
-        //setCurrentDescriber(data.game.currentDescriber);
         setLoading(true);
       })
       .catch((e) => {
@@ -64,16 +65,16 @@ function Player({ userId, roomcode }: PlayerProps) {
                       }}
                       key={i}
                     >
-                      <S.PlayerName isAlive={player.state !== "ALIVE"}>
+                      <S.PlayerName isDead={player.state !== "ALIVE"}>
                         {player.nickname}
                       </S.PlayerName>
                       <S.PlayerCharacter
                         src={`${process.env.PUBLIC_URL}/assets/${i}.png`}
                         index={i}
-                        isAlive={player.state !== "ALIVE"}
+                        isDead={player.state !== "ALIVE"}
                       />
-                      {description[i] ? (
-                        <S.Bubble>{description[i].description}</S.Bubble>
+                      {descriptions[i] ? (
+                        <S.Bubble>{descriptions[i].description}</S.Bubble>
                       ) : currentDescriber === players[i].userId ? (
                         <>
                           <S.Bubble>

@@ -13,6 +13,16 @@ interface playersProps {
   state: string;
 }
 
+interface gamesProps {
+  me: { role: string; voted: boolean };
+  state: string;
+  subject: string;
+  round: number;
+  currentDescriber: string;
+  subjectDescription: { userId: string; description: string }[];
+  votes: string;
+}
+
 interface GameProps {
   user: playersProps;
   roomcode: string;
@@ -20,21 +30,21 @@ interface GameProps {
 
 function Game({ user, roomcode }: GameProps) {
   const [loading, setLoading] = useState(false);
-  const [round, setRound] = useState(0);
-  const [currentDescriber, setCurrentDescriber] = useState("");
   const [isManager, setIsManager] = useState(false);
   const [nowState, setNowState] = useState("");
+  const [game, setGame] = useState<gamesProps>();
+  const [voteIndex, setVoteIndex] = useState(-1);
   const loadGameInfo = async () => {
     axios
       .get(
         `https://realdragon.herokuapp.com/room?roomCode=${roomcode}&userId=${user.userId}`
       )
       .then(({ data }) => {
-        //setCurrentDescriber(data.game.currentDescriber);
         setIsManager(data.room.owner == user.userId);
         console.log(data.room.owner);
         console.log(user.userId);
         setNowState(data.room.state);
+        if (data.game) setGame(data.game);
       })
       .then(() => setLoading(true))
       .catch((e) => {
@@ -55,17 +65,38 @@ function Game({ user, roomcode }: GameProps) {
             {roomcode}
             <br />
             round.
-            {round}
+            {game ? game.round : "게임 시작 전입니다."}
           </S.Roomcode>
-          <Player userId={user.userId} roomcode={roomcode} />
+          <Player
+            userId={user.userId}
+            roomcode={roomcode}
+            isVoting={game?.state === "VOTING"}
+            descriptions={game?.subjectDescription || []}
+            voteIndex={voteIndex}
+            setVoteIndex={setVoteIndex}
+          />
           <Guide
             userId={user.userId}
             roomcode={roomcode}
             isManager={isManager}
-            now={nowState}
+            now={game?.state || nowState}
+            keyword={game?.subject || ""}
+            isMafia={game?.me.role === "MAFIA" || false}
+            voteIndex={voteIndex}
+            setVoteIndex={setVoteIndex}
           />
           <Chat />
-          {currentDescriber == user.userId ? <PopUp /> : <></>}
+          {game?.state === "DESCRIBING" &&
+          game?.currentDescriber == user.userId ? (
+            <PopUp
+              roomcode={roomcode}
+              userId={user.userId}
+              isMafia={game?.me.role === "MAFIA" || false}
+              keyword={game?.subject || ""}
+            />
+          ) : (
+            <></>
+          )}
         </S.Game>
       </S.Layout>
     </>
