@@ -15,7 +15,6 @@ class VoteResult:
 
 def vote_action(room_code, user_id, target_id):
     room = Room.objects.filter(code=room_code).first()
-    print(Room.objects.all())
     user = User.objects.filter(unique_id=user_id).first()
     target = User.objects.filter(unique_id=target_id).first()
     game = Game.objects.filter(room=room).last()
@@ -24,7 +23,7 @@ def vote_action(room_code, user_id, target_id):
     aliver = UserGameState.objects.filter(game=game, is_alive=True)
 
     aliver_id_set = set(map(lambda u: u.unique_id, aliver))
-    if not(user_id in aliver_id_set):
+    if not (user_id in aliver_id_set):
         raise APIException(code=400)
 
     for v in votes:
@@ -36,32 +35,29 @@ def vote_action(room_code, user_id, target_id):
 
     vote_set = set(map(lambda u: u.unique_id, votes))
 
-
-
-
-
     if len(vote_set) == len(aliver_id_set):
         result = calculate_total_vote_count(votes)
 
-        lst = list(result.keys())
-        for e in lst:
-            if result[e] == max(result.values()):
-                to_be_killed = next(filter(lambda u: u.unique_id == e, aliver))
+        for key in result.keys():
+            if result[key] == max(result.values()):
+                to_be_killed = next(filter(lambda u: u.unique_id == key, aliver))
                 to_be_killed.is_alive = False
+                to_be_killed.save()
 
                 if Role.objects.filter(game=game, user=to_be_killed.user).first().role_name == Role.MAFIA:
-                    pass
-                    #시민승리
-
+                    room.state = Room.WAITING
+                    room.save()
+                    game.state = Game.END
+                    game.save()
+                    return VoteResult(room, user, target)
 
         game.state = Game.GUSSING
 
-
-
-
-
     if len(aliver_id_set) == 2:
+        room.state = Room.WAITING
+        room.save()
         game.state = Game.END
-        #마피아 승리
+        # 마피아 승리
+    game.save()
 
     return VoteResult(room, user, target)
