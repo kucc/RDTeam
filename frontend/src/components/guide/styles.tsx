@@ -56,6 +56,7 @@ export const Button = styled.button<ButtonProps>`
   font-weight: 800;
   border-radius: 3rem;
   font-size: 2rem;
+  margin-top: 1rem;
   :hover {
     background: ${(props) => (props.isBlank ? COLOR.gray : COLOR.darker)};
   }

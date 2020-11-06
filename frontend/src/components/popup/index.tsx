@@ -8,17 +8,9 @@ interface PopUpProps {
   isMafia: boolean;
   keyword: string;
   isGuessing: boolean;
-  setResult: (s: string) => void;
 }
 
-function PopUp({
-  roomcode,
-  userId,
-  isMafia,
-  keyword,
-  isGuessing,
-  setResult,
-}: PopUpProps) {
+function PopUp({ roomcode, userId, isMafia, keyword, isGuessing }: PopUpProps) {
   const [chatText, setChatText] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChatText(e.target.value);
@@ -46,9 +38,6 @@ function PopUp({
           withCredentials: true,
         }
       )
-      .then(({ data }) => {
-        setResult(data.success ? "MAFIA" : "");
-      })
       .catch((e) => {
         console.error(e);
       });

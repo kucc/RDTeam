@@ -34,7 +34,6 @@ function Guide({
   users,
   result,
 }: GuideProps) {
-  const [loading, setLoading] = useState(false);
   const startGame = async () => {
     axios
       .post(
@@ -45,12 +44,8 @@ function Guide({
         },
         { withCredentials: true }
       )
-      .then(() => {
-        setLoading(true);
-      })
       .catch((e) => {
         console.error(e);
-        setLoading(false);
       });
   };
   const vote = async () => {
@@ -65,12 +60,10 @@ function Guide({
         { withCredentials: true }
       )
       .then(() => {
-        setLoading(true);
         setVoteIndex(-1);
       })
       .catch((e) => {
         console.error(e);
-        setLoading(false);
       });
   };
   return (

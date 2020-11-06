@@ -46,6 +46,8 @@ function Game({ user, roomcode }: GameProps) {
         setNowState(data.room.state);
         setUsers(data.users);
         if (data.game) setGame(data.game);
+        if (data.game.lastGameResult)
+          setResult(data.game.lastGameResult.winner);
       })
       .then(() => setLoading(true))
       .catch((e) => {
@@ -62,11 +64,9 @@ function Game({ user, roomcode }: GameProps) {
       <S.Layout>
         <S.Game>
           <S.Roomcode>
-            room no.
-            {roomcode}
+            [room] {roomcode}
             <br />
-            round.
-            {game ? game.round : "게임 시작 전입니다."}
+            [round] {game ? game.round : "게임 시작 전입니다."}
           </S.Roomcode>
           <Player
             userId={user.userId}
@@ -83,7 +83,7 @@ function Game({ user, roomcode }: GameProps) {
             now={game?.state || nowState}
             keyword={game?.subject || ""}
             isMafia={game?.me.role === "MAFIA" || false}
-            voteIndex={voteIndex}
+            voteIndex={game?.me.voted == true ? -1 : voteIndex}
             setVoteIndex={setVoteIndex}
             users={users || []}
             result={result}
@@ -97,7 +97,6 @@ function Game({ user, roomcode }: GameProps) {
               isGuessing={false}
               isMafia={game?.me.role === "MAFIA" || false}
               keyword={game?.subject || ""}
-              setResult={setResult}
             />
           ) : (
             <></>
@@ -109,7 +108,6 @@ function Game({ user, roomcode }: GameProps) {
               isGuessing={true}
               isMafia={game?.me.role === "MAFIA" || false}
               keyword={game?.subject || ""}
-              setResult={setResult}
             />
           ) : (
             <></>
