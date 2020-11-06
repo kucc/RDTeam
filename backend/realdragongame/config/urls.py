@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 from game.urls import router
-from game.views.room import CreateRoomApiView
+from game.views.room import RoomApiView
 
 urlpatterns = [
-    path('room', CreateRoomApiView.as_view()),
+    path('room', RoomApiView.as_view()),
 ]

@@ -9,5 +9,4 @@ class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=CASCADE, related_name='user')
     game = models.ForeignKey(Game, on_delete=CASCADE)
     round = models.IntegerField()
-    vote_to_kill = models.BooleanField()
     target_user = models.ForeignKey(User, on_delete=CASCADE, related_name='target_user')

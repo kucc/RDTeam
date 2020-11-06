@@ -42,3 +42,10 @@ class RoundSubject(models.Model):
 class RoundSubjectDescription(models.Model):
     round_subject = models.ForeignKey(RoundSubject, on_delete=CASCADE)
     user = models.ForeignKey(User, on_delete=CASCADE)
+    description = models.CharField(max_length=100)
+
+
+class UserGameState(models.Model):
+    user = models.ForeignKey(User, on_delete=CASCADE)
+    game = models.ForeignKey(Game, on_delete=CASCADE)
+    is_alive = models.BooleanField(default=True)
