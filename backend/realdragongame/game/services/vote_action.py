@@ -22,7 +22,7 @@ def vote_action(room_code, user_id, target_id):
 
     aliver = UserGameState.objects.filter(game=game, is_alive=True)
 
-    aliver_id_set = set(map(lambda u: u.unique_id, aliver))
+    aliver_id_set = set(map(lambda u: u.user.unique_id, aliver))
     if not (user_id in aliver_id_set):
         raise APIException(code=400)
 
@@ -33,14 +33,14 @@ def vote_action(room_code, user_id, target_id):
     vote = Vote(target_user=target, user=user, round=game.round, game=game)
     vote.save()
 
-    vote_set = set(map(lambda u: u.unique_id, votes))
+    vote_set = set(map(lambda u: u.user.unique_id, votes))
 
-    if len(vote_set) == len(aliver_id_set):
+    if len(vote_set) + 1 == len(aliver_id_set):
         result = calculate_total_vote_count(votes)
 
         for key in result.keys():
             if result[key] == max(result.values()):
-                to_be_killed = next(filter(lambda u: u.unique_id == key, aliver))
+                to_be_killed = next(filter(lambda u: u.user.unique_id == key, aliver))
                 to_be_killed.is_alive = False
                 to_be_killed.save()
 
