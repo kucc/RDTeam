@@ -6,7 +6,8 @@ from game.models import Room, Game, Role, UserGameState, Vote, RoundSubject, Rou
 def make_users_response(users):
     return [{
         "nickname": user_state.nickname,
-        "userId": user_state.unique_id
+        "userId": user_state.unique_id,
+        "state": "ALIVE"
     } for user_state in users]
 
 
