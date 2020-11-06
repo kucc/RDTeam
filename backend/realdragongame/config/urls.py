@@ -27,6 +27,6 @@ urlpatterns = [
     path('room/enter', JoinRoomApiView.as_view()),
     path('game/start', GameStartApiView.as_view()),
     path('description', DescriptionApiView.as_view()),
-    path('vote', VoteApiView.as_view())
-    path('guess', GuessApiView.as_view()),
+    path('vote', VoteApiView.as_view()),
+    path('guess', GuessApiView.as_view())
 ]
