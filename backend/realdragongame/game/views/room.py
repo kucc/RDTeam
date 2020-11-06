@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 
 from game.services.create_room import create_room
 from game.services.fetch_room import fetch_room
+from game.services.join_room import join_room
 
 
 class RoomApiView(APIView):
@@ -22,3 +23,15 @@ class RoomApiView(APIView):
     def get(self, request):
         return Response(fetch_room(
             request.query_params['roomCode'], request.query_params['userId']))
+
+class JoinRoomApiView(APIView):
+    @classmethod
+    def get_extra_actions(cls):
+        return []
+
+    def post(self, request):
+        result = join_room(request.data['roomCode'], request.data['nickname'])
+        return Response({
+            "userId": result.user.unique_id,
+            "nickname": result.user.nickname
+        })

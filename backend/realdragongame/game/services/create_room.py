@@ -17,3 +17,4 @@ def create_room(nickname):
                 unique_id=uuid.uuid4().__str__())
     user.save()
     return CreateRoomResult(room, user)
+
