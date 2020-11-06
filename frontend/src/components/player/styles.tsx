@@ -1,4 +1,5 @@
-import styled from "styled-components/macro";
+import styled, { css } from "styled-components/macro";
+import { COLOR } from "../../constant";
 
 export const Layout = styled.div`
   width: 70%;
@@ -12,11 +13,12 @@ export const Layout = styled.div`
 export const Player = styled.div`
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 2rem 0 0 0;
 `;
 
 export const PlayerCharacterWrapper = styled.div`
@@ -29,25 +31,36 @@ export const PlayerCharacterWrapper = styled.div`
   align-items: center;
 `;
 
-export const PlayerCharacterContainer = styled.div`
+interface PlayerCharacterProps {
+  index?: number;
+  isAlive?: boolean;
+  isSelected?: boolean;
+}
+
+export const PlayerCharacterContainer = styled.div<PlayerCharacterProps>`
   width: 25%;
   padding: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  background: ${(props) => (props.isSelected ? COLOR.light : "none")};
+  border: ${(props) =>
+    props.isSelected ? css`1px solid ${COLOR.dark}` : "none"};
+  border-radius: 2rem;
 `;
-
-interface PlayerCharacterProps {
-  index?: number;
-  isAlive?: boolean;
-}
 
 export const PlayerCharacter = styled.img<PlayerCharacterProps>`
   width: 100%;
   padding: 3rem;
   filter: saturate(${(props) => (props.isAlive ? "0%" : "100%")});
   opacity: ${(props) => (props.isAlive ? "70%" : "100%")};
+`;
+
+export const CharacterBlank = styled.img<PlayerCharacterProps>`
+  width: 80%;
+  padding: 3rem;
+  opacity: 0.7;
 `;
 
 export const PlayerName = styled.div<PlayerCharacterProps>`
@@ -59,13 +72,14 @@ export const PlayerName = styled.div<PlayerCharacterProps>`
 `;
 
 export const Bubble = styled.div`
-  background: #ccc;
+  background: ${COLOR.background};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   margin-top: -3rem;
+  width: 100%;
   height: 6rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;

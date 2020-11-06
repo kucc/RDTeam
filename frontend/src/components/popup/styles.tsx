@@ -1,4 +1,5 @@
-import styled from "styled-components/macro";
+import styled, { css } from "styled-components/macro";
+import { COLOR } from "../../constant";
 
 export const Layout = styled.div`
   position: absolute;
@@ -11,13 +12,14 @@ export const Layout = styled.div`
   justify-content: center;
   align-items: center;
   background: #00000088;
+  border-radius: 2rem;
 `;
 
 export const PopUp = styled.div`
   position: relative;
   width: 70rem;
   height: 30rem;
-  background: #ccc;
+  background: ${COLOR.light};
   border-radius: 5rem;
   display: flex;
   flex-direction: column;
@@ -39,7 +41,7 @@ interface PopUpProps {
 export const KeyWord = styled.span`
   font-size: 3rem;
   font-weight: 800;
-  color: #009;
+  color: ${COLOR.blue};
 `;
 
 export const Comment = styled.div`
@@ -57,7 +59,7 @@ export const InputContainer = styled.div`
   padding: 1rem;
   margin-top: 3rem;
   :focus-within {
-    box-shadow: 0px 0px 5px #00000080;
+    box-shadow: 0px 0px 5px ${COLOR.dark};
   }
 `;
 
@@ -69,11 +71,16 @@ export const ChatInput = styled.input`
   background: none;
 `;
 
-export const SendButton = styled.button`
+interface ButtonProps {
+  isBlank?: boolean;
+}
+
+export const SendButton = styled.button<ButtonProps>`
   width: 7rem;
   outline: none;
   border: none;
-  background: #777;
+  background: ${(props) => (props.isBlank ? COLOR.gray : COLOR.dark)};
+  color: ${(props) => (props.isBlank ? COLOR.darkgray : "black")};
   font-weight: 800;
   border-radius: 1.5rem;
 `;

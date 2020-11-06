@@ -25,43 +25,48 @@ function Main({ user, setUser, roomcode, setRoomcode, startGame }: MainProps) {
   const handleRoomcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoomcode(e.target.value);
   };
+
   const makeRoom = async () => {
     axios
-      .post("/room", { nickname: nickname })
+      .post(
+        "https://realdragon.herokuapp.com/room",
+        { nickname: nickname },
+        { withCredentials: true }
+      )
       .then(({ data }) => {
-        setLoading(true);
-        setUser({ nickname: nickname, userId: data.userId, state: "ALIVE" });
         setRoomcode(data.roomCode);
-        enterRoom();
+        setUser({ nickname: nickname, userId: data.userId, state: "ALIVE" });
+        setLoading(true);
+      })
+      .then(() => {
+        startGame();
       })
       .catch((e) => {
         console.error(e);
         setLoading(false);
       });
   };
+
   const enterRoom = async () => {
     axios
-      .post("/room", { roomCode: roomcode, nickname: nickname })
+      .post(
+        "https://realdragon.herokuapp.com/room/enter",
+        {
+          roomCode: roomcode,
+          nickname: nickname,
+        },
+        { withCredentials: true }
+      )
       .then(({ data }) => {
         setLoading(true);
-        setUser({ nickname: nickname, userId: data.userId, state: "ALIVE" });
-        searchRoom();
+        setUser({
+          nickname: nickname,
+          userId: data.userId,
+          state: "ALIVE",
+        });
       })
-      .catch((e) => {
-        console.error(e);
-        setLoading(false);
-      });
-  };
-  const searchRoom = async () => {
-    axios
-      .get(`/room?code=${roomcode}&userId=${user.userId}`)
-      .then(({ data }) => {
-        if (data.room.state == "WAITING") {
-          if (data.game.users.length > 7) alert("방 인원이 가득 찼습니다.");
-          else startGame();
-        } else {
-          alert("해당 방은 이미 게임이 진행중입니다.");
-        }
+      .then(() => {
+        startGame();
       })
       .catch((e) => {
         console.error(e);
@@ -71,6 +76,9 @@ function Main({ user, setUser, roomcode, setRoomcode, startGame }: MainProps) {
   return (
     <>
       <S.Main>
+        <S.WaveContainer>
+          <S.Wave url={`${process.env.PUBLIC_URL}/assets/wave.png`} />
+        </S.WaveContainer>
         <S.Comment>
           <span style={{ color: "#900" }}>박</span>력있는{" "}
           <span style={{ color: "#900" }}>진</span>짜 어른

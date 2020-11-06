@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./styles";
 
 function PopUp() {
   const isMapia = false;
-  const keyword = "인생";
+  const keyword = "박진용";
+  const [chatText, setChatText] = useState("");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChatText(e.target.value);
+  };
+  const onSubmit = () => {};
   return (
     <>
       <S.Layout>
@@ -20,8 +25,11 @@ function PopUp() {
               type="text"
               placeholder="10자 이내로 입력하세요"
               maxLength={10}
+              onChange={handleChange}
             />
-            <S.SendButton>확인</S.SendButton>
+            <S.SendButton isBlank={chatText.length == 0} onClick={onSubmit}>
+              확인
+            </S.SendButton>
           </S.InputContainer>
         </S.PopUp>
       </S.Layout>

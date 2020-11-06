@@ -1,4 +1,5 @@
 import styled from "styled-components/macro";
+import { COLOR } from "../../constant";
 
 export const Layout = styled.div`
   width: 70%;
@@ -12,16 +13,17 @@ export const Layout = styled.div`
 export const Guide = styled.div`
   width: 100%;
   height: 100%;
-  background: #ddd;
+  background: ${COLOR.light};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 0 0 0 2rem;
 `;
 
 export const Text = styled.div`
   font-size: 4rem;
-  font-weight: 800;
+  font-weight: 700;
 `;
 
 interface GuideProps {
@@ -31,11 +33,25 @@ interface GuideProps {
 export const RoleText = styled.span<GuideProps>`
   font-size: 4rem;
   font-weight: 800;
-  color: ${(props) => (props.isMapia ? "#900" : "#009")};
+  color: ${(props) => (props.isMapia ? COLOR.red : COLOR.blue)};
 `;
 
 export const Comment = styled.div`
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 2.5rem;
+  font-weight: 700;
   margin: 1rem;
+`;
+
+export const GameStartButton = styled.button`
+  width: 20rem;
+  height: 5rem;
+  outline: none;
+  border: none;
+  background: ${COLOR.dark};
+  font-weight: 800;
+  border-radius: 3rem;
+  font-size: 2rem;
+  :hover {
+    background: ${COLOR.darker};
+  }
 `;
