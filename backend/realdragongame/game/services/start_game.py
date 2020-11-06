@@ -31,6 +31,8 @@ def start_game(room_code, user_id):
     random.shuffle(subjects)
     RoundSubject(game=game, round=1, subject_word=subjects[0]).save()
     init_user_states(game, room)
+    room.state = Room.PLAYING
+    room.save()
 
 
 def init_roles(game, room):
