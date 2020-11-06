@@ -17,11 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 from game.urls import router
-from game.views.game import GameStartApiView
+from game.views.game import GameStartApiView, DescriptionApiView
 from game.views.room import RoomApiView, JoinRoomApiView
 
 urlpatterns = [
     path('room', RoomApiView.as_view()),
     path('room/enter', JoinRoomApiView.as_view()),
     path('game/start', GameStartApiView.as_view()),
+    path('description', DescriptionApiView.as_view()),
 ]
