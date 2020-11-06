@@ -6,18 +6,18 @@ from game.models.user import User
 
 
 class Game(models.Model):
-    WAITING = 'WAITING'
-    PLAYING = 'PLAYING'
-    END = 'END'
+    DESCRIBING = 'DESCRIBING'
+    VOTING = 'VOTING'
+    GUSSING = 'GUSSING'
     game_states = (
-        (WAITING, '대기중'),
-        (PLAYING, '게임 중'),
-        (END, '게임종료')
+        (DESCRIBING, '설명'),
+        (VOTING, '투표 중'),
+        (GUSSING, '주제 추측 중'),
     )
 
     round = models.IntegerField()
     room = models.ForeignKey(Room, on_delete=CASCADE)
-    state = models.CharField(choices=game_states, max_length=10)
+    state = models.CharField(choices=game_states, max_length=20)
 
 
 class Role(models.Model):
