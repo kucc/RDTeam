@@ -70,6 +70,17 @@ def fetch_room(room_code, user_id):
     votes = Vote.objects.filter(game=game, round=game.round)
     voted = len(list(filter(lambda vote: vote.user.unique_id == user_id, votes))) != 0
 
+    last_game_result = None
+    if game.is_end():
+        mafia = Role.objects.filter(game=game, role_name=Role.MAFIA).first()
+        mafia_state = UserGameState.objects.filter(game=game, user=mafia.user).first()
+
+        last_game_result = {
+            "mafiaUserId": mafia.user.unique_id,
+            "mafiaNickname": mafia.user.nickname,
+            "winner": Role.MAFIA if mafia_state.is_alive else Role.CITIZEN
+        }
+
     return {
         "room": {
             "owner": owner_id,
@@ -85,7 +96,8 @@ def fetch_room(room_code, user_id):
             "round": game.round,
             "currentDescriber": game.current_describer.unique_id,
             "subjectDescription": make_round_subject_description_response(subject_desciptions),
-            "votes": calculate_total_vote_count(votes)
+            "votes": calculate_total_vote_count(votes),
+            "lastGameResult": last_game_result
         },
         "users": make_users_state_response(user_game_states)
     }
