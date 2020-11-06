@@ -28,6 +28,9 @@ class Game(models.Model):
     def is_describing(self):
         return self.state == Game.DESCRIBING
 
+    def is_guessing(self):
+        return self.state == Game.GUSSING
+
 
 class Role(models.Model):
     MAFIA = 'MAFIA'
@@ -39,6 +42,9 @@ class Role(models.Model):
     game = models.ForeignKey(Game, on_delete=CASCADE)
     user = models.ForeignKey(User, on_delete=CASCADE)
     role_name = models.CharField(choices=roles, max_length=20)
+
+    def is_citizen(self):
+        return self.role_name == Role.CITIZEN
 
 
 class RoundSubject(models.Model):

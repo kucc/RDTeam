@@ -3,6 +3,7 @@ import random
 from rest_framework.exceptions import NotFound, PermissionDenied, APIException
 
 from game.models import User, Room, Game, Role, RoundSubject, UserGameState
+from game.services.geneate_subject import generate_round_subject
 
 
 def is_game_playing(room):
@@ -27,9 +28,7 @@ def start_game(room_code, user_id):
     game = Game(room=room, round=1, state=Game.DESCRIBING, current_describer=owner)
     game.save()
     init_roles(game, room)
-    subjects = ['박진용', '강관훈', 'KUCC', '콜라', '치킨', '사물함', '칠판', '김현채', '김수홍', '최하민', '고려대학교']
-    random.shuffle(subjects)
-    RoundSubject(game=game, round=1, subject_word=subjects[0]).save()
+    generate_round_subject(game)
     init_user_states(game, room)
     room.state = Room.PLAYING
     room.save()
