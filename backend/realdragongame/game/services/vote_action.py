@@ -31,11 +31,14 @@ def vote_action(room_code, user_id, target_id):
             raise APIException(code=400)
 
     vote = Vote(target_user=target, user=user, round=game.round, game=game)
+
     vote.save()
+
+    votes = Vote.objects.filter(round=game.round, game=game)
 
     vote_set = set(map(lambda u: u.user.unique_id, votes))
 
-    if len(vote_set) + 1 == len(aliver_id_set):
+    if len(vote_set) == len(aliver_id_set):
         result = calculate_total_vote_count(votes)
 
         for key in result.keys():
