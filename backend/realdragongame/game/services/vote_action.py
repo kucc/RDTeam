@@ -19,10 +19,8 @@ def vote_action(room_code, user_id, target_id):
     user = User.objects.filter(unique_id=user_id).first()
     target = User.objects.filter(unique_id=target_id).first()
     game = Game.objects.filter(room=room).last()
-
     votes = Vote.objects.filter(round=game.round, game=game)
 
-    #
     if Vote.objects.count() == 0:
         vote = Vote(target_user__unique_id=target_id, user__unique_id=user_id, round=game.round, game=game)
         vote.save()

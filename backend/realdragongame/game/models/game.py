@@ -25,6 +25,9 @@ class Game(models.Model):
     def is_end(self):
         return self.state == Game.END
 
+    def is_describing(self):
+        return self.state == Game.DESCRIBING
+
 
 class Role(models.Model):
     MAFIA = 'MAFIA'
