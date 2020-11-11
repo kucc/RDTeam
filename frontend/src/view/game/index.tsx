@@ -33,7 +33,7 @@ function Game({ user, roomcode }: GameProps) {
   const [isManager, setIsManager] = useState(false);
   const [nowState, setNowState] = useState("");
   const [game, setGame] = useState<gamesProps>();
-  const [voteIndex, setVoteIndex] = useState(-1);
+  const [voteId, setVoteId] = useState("");
   const [users, setUsers] = useState<playersProps[]>();
   const [result, setResult] = useState("");
   const loadGameInfo = async () => {
@@ -73,8 +73,8 @@ function Game({ user, roomcode }: GameProps) {
             roomcode={roomcode}
             isVoting={game?.state === "VOTING"}
             descriptions={game?.subjectDescription || []}
-            voteIndex={voteIndex}
-            setVoteIndex={setVoteIndex}
+            voteId={voteId}
+            setVoteId={setVoteId}
           />
           <Guide
             userId={user.userId}
@@ -83,8 +83,8 @@ function Game({ user, roomcode }: GameProps) {
             now={game?.state || nowState}
             keyword={game?.subject || ""}
             isMafia={game?.me.role === "MAFIA" || false}
-            voteIndex={game?.me.voted == true ? -1 : voteIndex}
-            setVoteIndex={setVoteIndex}
+            voteId={game?.me.voted == true ? "" : voteId}
+            setVoteId={setVoteId}
             users={users || []}
             result={result}
           />
@@ -101,7 +101,7 @@ function Game({ user, roomcode }: GameProps) {
           ) : (
             <></>
           )}
-          {game?.state === "GUESSING" && game?.me.role === "MAFIA" ? (
+          {game?.state === "GUSSING" && game?.me.role === "MAFIA" ? (
             <PopUp
               roomcode={roomcode}
               userId={user.userId}

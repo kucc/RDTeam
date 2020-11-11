@@ -16,8 +16,8 @@ interface GuideProps {
   isMafia: boolean;
   now: string;
   keyword: string;
-  voteIndex: number;
-  setVoteIndex: (n: number) => void;
+  voteId: string;
+  setVoteId: (s: string) => void;
   users: playersProps[];
   result: string;
 }
@@ -29,8 +29,8 @@ function Guide({
   now,
   isMafia,
   keyword,
-  voteIndex,
-  setVoteIndex,
+  voteId,
+  setVoteId,
   users,
   result,
 }: GuideProps) {
@@ -55,12 +55,13 @@ function Guide({
         {
           roomCode: roomcode,
           userId: userId,
-          targetUserId: users[voteIndex].userId,
+          targetUserId: voteId,
         },
         { withCredentials: true }
       )
       .then(() => {
-        setVoteIndex(-1);
+        console.log(voteId);
+        setVoteId("");
       })
       .catch((e) => {
         console.error(e);
@@ -93,9 +94,9 @@ function Guide({
                 누가 <span style={{ fontWeight: 800 }}>마피아</span>일까요?
               </S.Text>
               <S.Button
-                isBlank={voteIndex == -1}
+                isBlank={voteId == ""}
                 onClick={() => {
-                  if (voteIndex != -1) vote();
+                  if (voteId != "") vote();
                 }}
               >
                 투표 완료

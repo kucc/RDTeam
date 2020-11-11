@@ -13,8 +13,8 @@ interface PlayerProps {
   roomcode: string;
   isVoting: boolean;
   descriptions: { userId: string; description: string }[];
-  voteIndex: number;
-  setVoteIndex: (n: number) => void;
+  voteId: string;
+  setVoteId: (s: string) => void;
 }
 
 function Player({
@@ -22,8 +22,8 @@ function Player({
   roomcode,
   isVoting,
   descriptions,
-  voteIndex,
-  setVoteIndex,
+  voteId,
+  setVoteId,
 }: PlayerProps) {
   const [loading, setLoading] = useState(false);
   const [players, setPlayers] = useState<playersProps[]>([]);
@@ -59,19 +59,20 @@ function Player({
                 return (
                   <>
                     <S.PlayerCharacterContainer
-                      isSelected={voteIndex == i && isVoting}
+                      isSelected={voteId == players[i].userId && isVoting}
                       onClick={() => {
-                        if (player.state === "ALIVE") setVoteIndex(i);
+                        if (players[i].state === "ALIVE")
+                          setVoteId(players[i].userId);
                       }}
                       key={i}
                     >
-                      <S.PlayerName isDead={player.state !== "ALIVE"}>
-                        {player.nickname}
+                      <S.PlayerName isDead={players[i].state !== "ALIVE"}>
+                        {players[i].nickname}
                       </S.PlayerName>
                       <S.PlayerCharacter
                         src={`${process.env.PUBLIC_URL}/assets/${i}.png`}
                         index={i}
-                        isDead={player.state !== "ALIVE"}
+                        isDead={players[i].state !== "ALIVE"}
                       />
                       {descriptions[i] ? (
                         <S.Bubble>{descriptions[i].description}</S.Bubble>

@@ -32,8 +32,8 @@ function PopUp({ roomcode, userId, isMafia, keyword, isGuessing }: PopUpProps) {
   const onGuess = async () => {
     axios
       .post(
-        `https://realdragon.herokuapp.com/subject/guess`,
-        { roomCode: roomcode, userId: userId, word: chatText },
+        `https://realdragon.herokuapp.com/guess`,
+        { roomCode: roomcode, userId: userId, subject: chatText },
         {
           withCredentials: true,
         }
