@@ -19,7 +19,7 @@ export const PopUp = styled.div`
   position: relative;
   width: 70rem;
   height: 30rem;
-  background: ${COLOR.light};
+  background: #d9ddeeaa;
   border-radius: 5rem;
   display: flex;
   flex-direction: column;
@@ -55,6 +55,7 @@ export const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
   background: #fff;
+  opacity: 0.6;
   border-radius: 2rem;
   padding: 1rem;
   margin-top: 3rem;

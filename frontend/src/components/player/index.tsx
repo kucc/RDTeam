@@ -14,6 +14,7 @@ interface PlayerProps {
   isVoting: boolean;
   descriptions: { userId: string; description: string }[];
   voteId: string;
+  currentDescriber: string;
   setVoteId: (s: string) => void;
 }
 
@@ -23,11 +24,11 @@ function Player({
   isVoting,
   descriptions,
   voteId,
+  currentDescriber,
   setVoteId,
 }: PlayerProps) {
   const [loading, setLoading] = useState(false);
   const [players, setPlayers] = useState<playersProps[]>([]);
-  const [currentDescriber, setCurrentDescriber] = useState("");
   const loadCharacters = async () => {
     axios
       .get(
@@ -59,35 +60,37 @@ function Player({
                 return (
                   <>
                     <S.PlayerCharacterContainer
-                      isSelected={voteId == players[i].userId && isVoting}
+                      isSelected={voteId == player.userId && isVoting}
                       onClick={() => {
-                        if (players[i].state === "ALIVE")
-                          setVoteId(players[i].userId);
+                        if (player.state === "ALIVE") setVoteId(player.userId);
                       }}
                       key={i}
                     >
-                      <S.PlayerName isDead={players[i].state !== "ALIVE"}>
-                        {players[i].nickname}
+                      <S.PlayerName isDead={player.state !== "ALIVE"}>
+                        {player.nickname}
                       </S.PlayerName>
                       <S.PlayerCharacter
                         src={`${process.env.PUBLIC_URL}/assets/${i}.png`}
                         index={i}
-                        isDead={players[i].state !== "ALIVE"}
+                        isDead={player.state !== "ALIVE"}
                       />
-                      {descriptions[i] ? (
-                        <S.Bubble>{descriptions[i].description}</S.Bubble>
-                      ) : currentDescriber === players[i].userId ? (
-                        <>
-                          <S.Bubble>
-                            <img
-                              src={`${process.env.PUBLIC_URL}/assets/texting.gif`}
-                              width="100%"
-                            />
-                          </S.Bubble>
-                        </>
-                      ) : (
-                        <></>
+                      {currentDescriber === player.userId && !isVoting && (
+                        <S.Bubble>
+                          <img
+                            src={`${process.env.PUBLIC_URL}/assets/texting.gif`}
+                            width="100%"
+                          />
+                        </S.Bubble>
                       )}
+                      {descriptions.map((d, ii) => {
+                        {
+                          return d.userId == player.userId ? (
+                            <S.Bubble>{d.description}</S.Bubble>
+                          ) : (
+                            <></>
+                          );
+                        }
+                      })}
                     </S.PlayerCharacterContainer>
                   </>
                 );

@@ -74,6 +74,7 @@ function Game({ user, roomcode }: GameProps) {
             isVoting={game?.state === "VOTING"}
             descriptions={game?.subjectDescription || []}
             voteId={voteId}
+            currentDescriber={game?.currentDescriber || ""}
             setVoteId={setVoteId}
           />
           <Guide
