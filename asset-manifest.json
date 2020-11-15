@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.js": "/RDTeam/static/js/main.b67a061f.chunk.js",
+    "main.js.map": "/RDTeam/static/js/main.b67a061f.chunk.js.map",
+    "runtime-main.js": "/RDTeam/static/js/runtime-main.d9d556bc.js",
+    "runtime-main.js.map": "/RDTeam/static/js/runtime-main.d9d556bc.js.map",
+    "static/js/2.e1a0af0f.chunk.js": "/RDTeam/static/js/2.e1a0af0f.chunk.js",
+    "static/js/2.e1a0af0f.chunk.js.map": "/RDTeam/static/js/2.e1a0af0f.chunk.js.map",
+    "static/js/3.a205805d.chunk.js": "/RDTeam/static/js/3.a205805d.chunk.js",
+    "static/js/3.a205805d.chunk.js.map": "/RDTeam/static/js/3.a205805d.chunk.js.map",
+    "index.html": "/RDTeam/index.html",
+    "static/js/2.e1a0af0f.chunk.js.LICENSE.txt": "/RDTeam/static/js/2.e1a0af0f.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d9d556bc.js",
+    "static/js/2.e1a0af0f.chunk.js",
+    "static/js/main.b67a061f.chunk.js"
+  ]
+}
