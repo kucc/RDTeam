@@ -23,14 +23,16 @@ def vote_action(room_code, user_id, target_id):
     aliver = UserGameState.objects.filter(game=game, is_alive=True)
 
     aliver_id_set = set(map(lambda u: u.user.unique_id, aliver))
-    if not (user_id in aliver_id_set):
+    if not (user_id in aliver_id_set):      # 죽은 사람이 투표 X
         raise APIException(code=400)
 
     for v in votes:
-        if v.user.unique_id == user_id:
+        if v.user.unique_id == user_id:         # 투표 2번 이상 X
             raise APIException(code=400)
-
     vote = Vote(target_user=target, user=user, round=game.round, game=game)
+
+    if not (target_id in aliver_id_set):     # 죽은 사람한테 투표 X
+        raise APIException(code=400)
 
     vote.save()
 

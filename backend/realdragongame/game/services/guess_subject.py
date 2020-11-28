@@ -19,6 +19,7 @@ def guess_subject(room_code, user_id, guessed):
     if not game or not game.is_guessing():
         raise APIException(code=400)
 
+
     user = User.objects.filter(unique_id=user_id).first()
     role = Role.objects.filter(user=user, game=game).first()
 

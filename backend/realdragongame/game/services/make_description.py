@@ -15,6 +15,11 @@ def make_description(room_code, user_id, description):
         raise APIException(code=400)
 
     user = User.objects.filter(unique_id=user_id).first()
+    aliver = UserGameState.objects.filter(game=game, is_alive=True)
+
+    aliver_id_set = set(map(lambda u: u.user.unique_id, aliver))
+    if not (user_id in aliver_id_set):
+        raise APIException(code=400)
 
     round_subject = RoundSubject.objects.filter(
         game=game,
